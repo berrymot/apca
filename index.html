@@ -114,18 +114,22 @@
             id("fg").addEventListener("input", function() {
                 fgx = fill(id("fg").value);
                 id("fgx").innerHTML = fgx != id("fg").value ? "= " + fgx : "";
+                id("go").disabled = !(/^#[0-9a-f]+$/i.test(fgx) && /^#[0-9a-f]+$/i.test(bgx));
             });
             id("bg").addEventListener("input", function() {
                 bgx = fill(id("bg").value);
                 id("bgx").innerHTML = bgx != id("fg").value ? "= " + bgx : "";
+                id("go").disabled = !(/^#[0-9a-f]+$/i.test(fgx) && /^#[0-9a-f]+$/i.test(bgx));
             });
             function fill(h) {
+                if (!/^#[0-9a-f]+$/i.test(h)) {
+                    return h;
+                }
                 var h = h.slice(1);
-                if (h.length != 3) {
-                    return "#" + h.repeat(Math.ceil(6 / h.length)).slice(0, 6);
-                } else {
+                if (h.length == 3) {
                     return "#" + [...h].map(c => c.repeat(2)).join("");
                 }
+                return "#" + h.repeat(Math.ceil(6 / h.length)).slice(0, 6);
             }
             id("fg").dispatchEvent(new Event("input", {"bubbles": true}));
             id("bg").dispatchEvent(new Event("input", {"bubbles": true}));
