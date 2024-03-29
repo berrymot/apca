@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>apca/wcag3 contrast checker</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            input {
+                font-family: monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>apca/wcag3 contrast checker</h1>
+        <p>might not be completely accurate but idk why yet</p>
+        <p>
+            <input type="text" id="fg" value="#ffffff" size="7" />
+            <label for="fg">text</label>
+            <span id="fgx"></span>
+            <br />
+            <input type="text" id="bg" value="#ffffff" size="7" />
+            <label for="bg">background</label>
+            <span id="bgx"></span>
+        </p>
+        <!-- <p>
+            <input type="number" id="fw" value="400" min="100" max="900" step="100" size="7" />
+            <label for="fw">font weight</label>
+            <br />
+            <input type="number" id="fw" value="16" list="sizes" size="7" />
+            <label for="fw">font size (px)</label>
+        </p> -->
+        <p><button id="go">calculate</button></p>
+        <p id="out"></p>
+        <script>
+            function hex2rgb(h) {
+                var h = parseInt(h.slice(1), 16);
+                return {
+                    "r": (h >> 16) & 255,
+                    "g": (h >> 8) & 255,
+                    "b": h & 255
+                };
+            }
+            function y(c) {
+                return (c.r / 255) ** 2.4 * 0.2126729 + (c.g / 255) ** 2.4 * 0.715122 + (c.b / 255) ** 2.4 * 0.0721750
+            }
+            function contrast(fg, bg) {
+                var yf = y(hex2rgb(fg));
+                var yb = y(hex2rgb(bg));
+                if (yf < 0.022) {
+                    yf = (0.022 - yf) ** 1.414 + yf;
+                }
+                if (yb < 0.022) {
+                    yb = (0.022 - yb) ** 1.414 + yb;
+                }
+                var brighter = Math.max(yf, yb);
+                var lc;
+                if (brighter == yf) {
+                    lc = yb ** 0.56 - yf ** 0.57;
+                } else {
+                    lc = yb ** 0.65 - yf ** 0.62;
+                }
+                lc *= 1.14;
+                if (Math.abs(lc) < 0.1) {
+                    return "too low";
+                }
+                lc = (lc + (lc > 0 ? -0.027 : 0.027)) * 100;
+                return lc;
+            }
+            const id = (x) => document.getElementById(x);
+            id("go").addEventListener("click", function() {
+                id("out").innerHTML = contrast(fgx, bgx);
+            });
+            id("fg").addEventListener("input", function() {
+                fgx = fill(id("fg").value);
+                id("fgx").innerHTML = fgx != id("fg").value ? "= " + fgx : "";
+            });
+            id("bg").addEventListener("input", function() {
+                bgx = fill(id("bg").value);
+                id("bgx").innerHTML = bgx != id("fg").value ? "= " + bgx : "";
+            });
+            function fill(h) {
+                var h = h.slice(1);
+                return "#" + h.repeat(Math.ceil(6 / h.length)).slice(0, 6);
+            }
+            id("fg").dispatchEvent(new Event("input", {"bubbles": true}));
+            id("bg").dispatchEvent(new Event("input", {"bubbles": true}));
+        </script>
+    </body>
+</html>
