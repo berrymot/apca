@@ -121,7 +121,11 @@
             });
             function fill(h) {
                 var h = h.slice(1);
-                return "#" + h.repeat(Math.ceil(6 / h.length)).slice(0, 6);
+                if (h.length != 3) {
+                    return "#" + h.repeat(Math.ceil(6 / h.length)).slice(0, 6);
+                } else {
+                    return "#" + [...h].map(c => c.repeat(2)).join("");
+                }
             }
             id("fg").dispatchEvent(new Event("input", {"bubbles": true}));
             id("bg").dispatchEvent(new Event("input", {"bubbles": true}));
