@@ -32,46 +32,44 @@
         </p> -->
         <p><button id="go">calculate</button></p>
         <p id="out"></p>
-        <details>
-            <summary>explanation</summary>
-            <table>
-                <tr>
-                    <th>&pm; score</th>
-                    <th>used for</th>
-                    <th>size/weight</th>
-                </tr>
-                <tr>
-                    <td>90</td>
-                    <td>body (pref.)</td>
-                    <td>14px/400</td>
-                </tr>
-                <tr>
-                    <td>75</td>
-                    <td>body (min.)</td>
-                    <td>18px/400</td>
-                </tr>
-                <tr>
-                    <td>60</td>
-                    <td>other content (min.)</td>
-                    <td>24px/400 or 16px/700</td>
-                </tr>
-                <tr>
-                    <td>45</td>
-                    <td>headings (min.)</td>
-                    <td>36px/400 or 24px/700</td>
-                </tr>
-                <tr>
-                    <td>30</td>
-                    <td>any other text (abs.min.)</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>15</td>
-                    <td>non-text (abs.min.)</td>
-                    <td></td>
-                </tr>
-            </table>
-        </details>
+        <h2>explanation</h2>
+        <table>
+            <tr>
+                <th>&pm; score</th>
+                <th>used for</th>
+                <th>size/weight</th>
+            </tr>
+            <tr>
+                <td>90</td>
+                <td>body (pref.)</td>
+                <td>14px/400</td>
+            </tr>
+            <tr>
+                <td>75</td>
+                <td>body (min.)</td>
+                <td>18px/400</td>
+            </tr>
+            <tr>
+                <td>60</td>
+                <td>other content (min.)</td>
+                <td>24px/400 or 16px/700</td>
+            </tr>
+            <tr>
+                <td>45</td>
+                <td>headings (min.)</td>
+                <td>36px/400 or 24px/700</td>
+            </tr>
+            <tr>
+                <td>30</td>
+                <td>any other text (abs.min.)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>15</td>
+                <td>non-text (abs.min.)</td>
+                <td></td>
+            </tr>
+        </table>
         <script>
             function hex2rgb(h) {
                 var h = parseInt(h.slice(1), 16);
@@ -118,7 +116,7 @@
             });
             id("bg").addEventListener("input", function() {
                 bgx = fill(id("bg").value);
-                id("bgx").innerHTML = bgx != id("fg").value ? "= " + bgx : "";
+                id("bgx").innerHTML = bgx != id("bg").value ? "= " + bgx : "";
                 id("go").disabled = !(/^#[0-9a-f]+$/i.test(fgx) && /^#[0-9a-f]+$/i.test(bgx));
             });
             function fill(h) {
