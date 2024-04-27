@@ -39,24 +39,22 @@ fn main() {
         better.sort_by(|(a, _), (b, _)| a.partial_cmp(b).unwrap());
         if better.is_empty() {
             println!("changing the text color will not result in a score above ±{x} :(");
+            break;
         } else {
             println!("closest text color with score above ±{x}: {}", better[0].1);
         }
-        let mut best = vec![];
-        for i in 0..=0xffffff {
-            let i = format!("{i:06x}");
-            best.push((i.clone(), contrast(&i, &bg).unwrap_or(0.).abs()));
-        }
-        best.sort_by(|(_, a), (_, b)| a.clone().partial_cmp(&b.clone()).unwrap());
-        best.reverse();
-        if best[0].0 != fg {
-            println!("best possible text color: {} ({})", best[0].0, best[0].1);
-        } else {
-            println!("this is the best possible text color for this background");
-        }
-        if better.is_empty() {
-            break;
-        }
+    }
+    let mut best = vec![];
+    for i in 0..=0xffffff {
+        let i = format!("{i:06x}");
+        best.push((i.clone(), contrast(&i, &bg).unwrap_or(0.).abs()));
+    }
+    best.sort_by(|(_, a), (_, b)| a.clone().partial_cmp(&b.clone()).unwrap());
+    best.reverse();
+    if best[0].0 != fg {
+        println!("best possible text color: {} ({})", best[0].0, best[0].1);
+    } else {
+        println!("this is the best possible text color for this background");
     }
     for x in [15., 30., 45., 60., 75., 90.]
         .iter()
